@@ -23,18 +23,30 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!--test-->
+        <!--test junit5-->
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!--test junit4-->
+        <!--        <dependency>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                    <scope>test</scope>
+                </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -54,7 +66,7 @@
                 <version>${surefire.version}</version>
                 <configuration>
                     <!-- In case of jmockit usage with jdk9 -->
-                    <argLine>-Djdk.attach.allowAttachSelf</argLine>
+                   <!-- <argLine>-Djdk.attach.allowAttachSelf</argLine>-->
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -63,8 +75,14 @@
                         <version>${junit-platform.version}</version>
                     </dependency>
                     <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit-jupiter.version}</version>
+                    </dependency>
+                    <dependency>
                         <groupId>org.junit.vintage</groupId>
                         <artifactId>junit-vintage-engine</artifactId>
+                        <version>${junit-jupiter.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

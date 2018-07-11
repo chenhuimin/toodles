@@ -3,7 +3,7 @@ package com.chm.toodles.lab.optional.api;
 import com.chm.toodles.lab.optional.pojo.Address;
 import com.chm.toodles.lab.optional.pojo.User;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
