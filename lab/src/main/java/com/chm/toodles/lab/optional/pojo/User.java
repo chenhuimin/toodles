@@ -1,5 +1,7 @@
 package com.chm.toodles.lab.optional.pojo;
 
+import lombok.ToString;
+
 /**
  * 用户类
  *
@@ -7,6 +9,7 @@ package com.chm.toodles.lab.optional.pojo;
  * @date 2018-07-03 14:43
  */
 
+@ToString(of = {"name"})
 public class User {
     private String name;
     private String phone;
@@ -34,5 +37,12 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 }
