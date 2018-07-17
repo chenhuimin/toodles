@@ -9,6 +9,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * OptionalTest
  *
@@ -24,20 +26,24 @@ public class OptionalTest {
         User user2 = new User("user2");
         User user3 = new User("user3");
         User user = Optional.ofNullable(user1).orElse(user2);
+        assertEquals("user2", user.getName(), "user.getName() should be equals user2");
         log.info("user={}", user.getName());
         user = Optional.ofNullable(user2).orElse(user3);
         log.info("user={}", user.getName());
+        assertEquals("user2", user.getName(), "user.getName() should be equals user2");
 
     }
 
     @Test
-    public void orElseGet(){
+    public void orElseGet() {
         User user1 = null;
         User user2 = new User("user2");
         User user3 = new User("user3");
         User user = Optional.ofNullable(user1).orElseGet(() -> user2);
+        assertEquals("user2", user.getName(), "user.getName() should be equals user2");
         log.info("user={}", user.getName());
         user = Optional.ofNullable(user2).orElseGet(() -> user3);
+        assertEquals("user2", user.getName(), "user.getName() should be equals user2");
         log.info("user={}", user.getName());
     }
 
@@ -46,9 +52,10 @@ public class OptionalTest {
         User user1 = null;
         User user2 = new User("user2");
         User user = Optional.ofNullable(user2).orElseThrow(() -> new Exception("用户不存在"));
+        assertEquals("user2", user.getName(), "user.getName() should be equals user2");
         log.info("user={}", user.getName());
-        user = Optional.ofNullable(user1).orElseThrow(() -> new Exception("用户不存在"));
-        log.info("user={}", user.getName());
+        assertThrows(Exception.class, () -> Optional.ofNullable(user1).orElseThrow(() -> new Exception("用户不存在")));
+
 
     }
 
@@ -57,13 +64,69 @@ public class OptionalTest {
     public void getCity(User user) {
         String city = Optional.ofNullable(user).map(u -> u.getAddress()).map(a -> a.getCity()).orElse(null);
         log.info("city={}", city);
+        assertNotNull(city, "city should be not null");
+//        传统写法
+//        public String getCity(User user)  throws Exception{
+//            if(user!=null){
+//                if(user.getAddress()!=null){
+//                    Address address = user.getAddress();
+//                    if(address.getCity()!=null){
+//                        return address.getCity();
+//                    }
+//                }
+//            }
+//            return null;
+//        }
+    }
 
+    @Test
+    public void getUser() {
+        User user1 = null;
+        User user2 = new User("user2");
+        Optional.ofNullable(user1).ifPresent(
+                user -> log.info(user.getName()));
+        Optional.ofNullable(user2).ifPresent(
+                user -> log.info(user.getName()));
+//        以前写法
+//        if(user!=null){
+//            dosomething(user);
+//        }
+    }
 
+    @Test
+    public void filter() {
+        User user1 = null;
+        User user2 = new User("user2");
+        User user = Optional.ofNullable(user1).filter(u -> "user1".equals(u.getName())).orElseGet(() -> {
+            User u = new User();
+            u.setName("user3");
+            return u;
+        });
+        assertEquals("user3", user.getName());
+        user = Optional.ofNullable(user2).filter(u -> "user2".equals(u.getName())).orElseGet(() -> {
+            User u = new User();
+            u.setName("user3");
+            return u;
+        });
+        assertEquals("user2", user.getName());
+
+        //以前写法
+//        public User getUser(User user) throws Exception{
+//            if(user!=null){
+//                String name = user.getName();
+//                if("zhangsan".equals(name)){
+//                    return user;
+//                }
+//            }else{
+//                user = new User();
+//                user.setName("zhangsan");
+//                return user;
+//            }
+//        }
     }
 
     static Iterator<User> userProvider() {
         List<User> users = new ArrayList<>();
-        users.add(null);
         for (int i = 0; i < 5; i++) {
             User user = createUser();
             users.add(user);
