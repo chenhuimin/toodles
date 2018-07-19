@@ -8,31 +8,32 @@ package com.chm.toodles.lab.optional.pojo;
  */
 
 public class Address {
-    private String provice;
-    private String city;
-    private String area;
 
-    public String getProvice() {
-        return provice;
-    }
+  private String provice;
+  private String city;
+  private String area;
 
-    public void setProvice(String provice) {
-        this.provice = provice;
-    }
+  public String getProvice() {
+    return provice;
+  }
 
-    public String getCity() {
-        return city;
-    }
+  public void setProvice(String provice) {
+    this.provice = provice;
+  }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+  public String getCity() {
+    return city;
+  }
 
-    public String getArea() {
-        return area;
-    }
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-    public void setArea(String area) {
-        this.area = area;
-    }
+  public String getArea() {
+    return area;
+  }
+
+  public void setArea(String area) {
+    this.area = area;
+  }
 }

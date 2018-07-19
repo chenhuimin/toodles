@@ -103,6 +103,7 @@
 
     <modules>
         <module>lab</module>
+        <module>tjkit</module>
     </modules>
     <dependencyManagement>
         <dependencies>
