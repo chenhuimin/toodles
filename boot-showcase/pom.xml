@@ -53,6 +53,11 @@
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
+    <!-- modelmapper做DTO和Entity的相互转化 -->
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+    </dependency>
     <!-- Swagger2构建RESTful API文档 -->
     <dependency>
       <groupId>io.springfox</groupId>

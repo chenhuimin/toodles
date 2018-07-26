@@ -46,7 +46,7 @@ public abstract class BaseEntity {
   /**
    * 逻辑删除，1：删除，0：未删除
    */
-  @Column(name = "is_deleted", columnDefinition = "unsigned tinyint default 0")
+  @Column(name = "is_deleted", columnDefinition = "unsigned tinyint not null default 0")
   protected Integer isDeleted;
 
 }
