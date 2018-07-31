@@ -7,17 +7,19 @@ import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
 import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
-import groovy.util.ResourceException;
-import groovy.util.ScriptException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.codehaus.groovy.runtime.memoize.ConcurrentCommonCache;
 
-public class OrderSpecRule {
+@Slf4j
+public class OrderSpecRuleClient {
 
   private static volatile Map<String, Class> classCache = new ConcurrentCommonCache<String, Class>();
 
@@ -51,7 +53,7 @@ public class OrderSpecRule {
     if (clazz != null) {
       return clazz;
     }
-    synchronized (OrderSpecRule.class) {
+    synchronized (OrderSpecRuleClient.class) {
       clazz = classCache.get(scriptTextMd5);
       if (clazz == null) {
         GroovyClassLoader loader = GroovyClassLoaderEnum.INSTANCE.getGroovyClassLoader();
@@ -79,14 +81,25 @@ public class OrderSpecRule {
     }
   }
 
-  public static void main(String[] args)
-      throws IOException, ResourceException, ScriptException, IllegalAccessException, InstantiationException, URISyntaxException {
+  public static void main(String[] args) throws IllegalAccessException, InstantiationException {
     String resourceName = "script/OrderSpecHandler.groovy";
     Class clazz = genClassByFile(resourceName);
+    String businessCatId = "1501";
+    String businessStatus = "5";
+
+    List<OrderSpec> orderSpecs = Arrays
+        .asList(new OrderSpec(null, "入口时间", "2018.08.01 00:13", null),
+            new OrderSpec(null, "出口时间", "2018.08.01 00:14", null),
+            new OrderSpec(null, "车道交易流水", "201808010015", null),
+            new OrderSpec(null, "虚拟鲁通卡号", "123456", null));
+    Object[] params = {businessCatId, businessStatus, orderSpecs};
     if (clazz != null) {
       while (true) {
         GroovyObject groovyObject = (GroovyObject) clazz.newInstance();
-        groovyObject.invokeMethod("doIt", null);
+        OrderSpecFilteredDTO filteredDTO = (OrderSpecFilteredDTO) groovyObject
+            .invokeMethod("applyRule", params);
+        log.info("targetOrderSpecs={},extraAttributes={}", filteredDTO.getTargetOrderSpecs(),
+            filteredDTO.getExtraAttributes());
       }
     }
 
@@ -99,7 +112,7 @@ public class OrderSpecRule {
 //    System.out.println(loader.getParent().getClass().getName());
 //    ClassLoader cl = ClassLoader.getSystemClassLoader();
 //    System.out.println(cl.getClass().getName());
-//    OrderSpecRule groovy = new OrderSpecRule();
+//    OrderSpecRuleClient groovy = new OrderSpecRuleClient();
 //
 //    String filename = "hello.groovy";
 //    String[] roots = new String[]{"script"};
