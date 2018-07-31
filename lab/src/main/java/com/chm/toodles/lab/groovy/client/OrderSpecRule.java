@@ -1,6 +1,7 @@
 package com.chm.toodles.lab.groovy.client;
 
 import com.chm.toodles.lab.groovy.common.GroovyClassLoaderEnum;
+import com.google.common.io.Resources;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
@@ -10,6 +11,8 @@ import groovy.util.ResourceException;
 import groovy.util.ScriptException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Map;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.codehaus.groovy.runtime.memoize.ConcurrentCommonCache;
@@ -39,7 +42,10 @@ public class OrderSpecRule {
     }
   }
 
-  public static Class genClass(String scriptText) {
+  /**
+   * 处理以字符串输入脚本
+   */
+  public static Class genClassByString(String scriptText) {
     String scriptTextMd5 = DigestUtils.md5Hex(scriptText);
     Class clazz = classCache.get(scriptTextMd5);
     if (clazz != null) {
@@ -58,18 +64,32 @@ public class OrderSpecRule {
     return clazz;
   }
 
-  public static void main(String[] args)
-      throws IOException, ResourceException, ScriptException, IllegalAccessException, InstantiationException {
+  public static Class genClassByFile(String resourceName) {
+    URL fileURL = Resources.getResource(resourceName);
+    try {
+      File file = new File(fileURL.toURI());
+      GroovyClassLoader loader = GroovyClassLoaderEnum.INSTANCE.getGroovyClassLoader();
+      return loader.parseClass(file);
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+      return null;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
 
-    String scriptText = "class OrderSpecHandler { void doIt() { println \"ok\" } }";
-    File file = new File("script/OrderSpecHandler.groovy");
-    while (true) {
-      Class clazz = genClass(scriptText);
-      if (clazz != null) {
+  public static void main(String[] args)
+      throws IOException, ResourceException, ScriptException, IllegalAccessException, InstantiationException, URISyntaxException {
+    String resourceName = "script/OrderSpecHandler.groovy";
+    Class clazz = genClassByFile(resourceName);
+    if (clazz != null) {
+      while (true) {
         GroovyObject groovyObject = (GroovyObject) clazz.newInstance();
         groovyObject.invokeMethod("doIt", null);
       }
     }
+
 //    ReferenceQueue<String> queue = new ReferenceQueue<String>();
 //    PhantomReference<String> pr = new PhantomReference<String>(new String("hello"), queue);
 //    System.out.println(pr.get());
