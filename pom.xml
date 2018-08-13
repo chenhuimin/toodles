@@ -106,6 +106,7 @@
   <modules>
     <module>lab</module>
     <module>tjkit</module>
+    <module>effectivejava-3e</module>
   </modules>
   <dependencyManagement>
     <dependencies>
