@@ -1,0 +1,20 @@
+package com.chm.toodles.effectivejava.closeresource.trywithresources;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TopLine {
+
+  public static String firstLineOfFile(String path) throws IOException {
+    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+      return br.readLine();
+    }
+  }
+
+  public static void main(String[] args) throws IOException {
+    String path = args[0];
+    System.out.println(firstLineOfFile(path));
+  }
+
+}
