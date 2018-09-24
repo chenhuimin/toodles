@@ -26,7 +26,7 @@ public class StudentController {
   @ApiImplicitParam(name = "student", value = "StudentDTO对象", dataType = "StudentDTO")
   @PostMapping("/v1/student")
   public StudentDTO addStudent(@RequestBody StudentDTO student) {
-
+    return null;
   }
 
 }

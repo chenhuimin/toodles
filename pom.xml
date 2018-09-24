@@ -66,7 +66,7 @@
     <!--
      | Dependency versions
      -->
-    <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+    <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
     <modelmapper.version>2.1.0</modelmapper.version>
     <swagger2.version>2.7.0</swagger2.version>
     <base-bundle.version>8</base-bundle.version>
@@ -107,6 +107,7 @@
     <module>lab</module>
     <module>tjkit</module>
     <module>effectivejava-3e</module>
+    <module>boot-showcase</module>
   </modules>
   <dependencyManagement>
     <dependencies>
