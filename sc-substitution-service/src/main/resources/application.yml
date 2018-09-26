@@ -1,0 +1,13 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: substitution
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://admin:admin@master:8761/eureka/,http://admin:admin@slave1:8762/eureka/
