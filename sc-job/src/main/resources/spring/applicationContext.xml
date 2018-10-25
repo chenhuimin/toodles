@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+  xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg 
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd 
+                        http://www.dangdang.com/schema/ddframe/job 
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd">
+
+  <!--配置作业注册中心 -->
+  <reg:zookeeper id="regCenter" server-lists="192.168.56.101:2181" namespace="sc-job"
+    base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3"/>
+
+  <!--<bean id="elasticJobLog" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+  <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+  <!--<property name="url" value="jdbc:mysql://localhost:3306/batch_log"/>-->
+  <!--<property name="username" value="root"/>-->
+  <!--<property name="password" value=""/>-->
+  <!--</bean>-->
+
+  <!-- 配置简单作业-->
+  <!--  <substitution:simple id="mySimpleJob" registry-center-ref="regCenter"
+      class="com.chm.toodles.substitutionstitution.simple.MySimpleJob" cron="0/10 * * * * ?" sharding-total-count="2"
+      sharding-item-parameters="0=0,1=1" description="我的第一个简单作业" overwrite="true"/>-->
+
+  <job:simple id="mySimpleJob" class="com.chm.toodles.substitution.simple.MySimpleJob"
+    registry-center-ref="regCenter" cron="0 0/1 * * * ?" sharding-total-count="3"
+    sharding-item-parameters="0=0,1=1,2=2" description="我的第一个简单作业" overwrite="true"
+    event-trace-rdb-data-source="dataSource"/>
+
+  <!--  <substitution:dataflow id="myDataflowJob" registry-center-ref="zk"
+      class="com.chm.toodles.substitutionstitution.dataflow.MyDataflowJob" cron="0 0/1 * * * ?"
+      sharding-total-count="1" sharding-item-parameters="" description="我的第一个数据流作业"
+      streaming-process="true" overwrite="true"/>-->
+  <!--<substitution:script id="myScriptJob" registry-center-ref="zk" script-command-line="demo.bat"-->
+  <!--cron="0/10 * * * * ?"-->
+  <!--sharding-total-count="1" sharding-item-parameters="" description="我的第一个脚本任务" overwrite="true"/>-->
+
+  <!--<substitution:simple id="mySimpleJob" class="com.fangjia.substitution.MySimpleJob" registry-center-ref="regCenter"
+    cron="0 19 21 * * ?" sharding-total-count="2" sharding-item-parameters="0=0,1=1"
+    description="我的第一个简单作业" overwrite="true"/>
+
+  <substitution:simple id="mySimpleJob" class="com.fangjia.substitution.MySimpleJob" registry-center-ref="regCenter"
+    cron="0 19 21 * * ?" sharding-total-count="2" sharding-item-parameters="0=上海,1=北京"
+    description="我的第一个简单作业" overwrite="true" event-trace-rdb-data-source="elasticJobLog"
+    substitution-exception-handler="com.fangjia.substitution.CustomJobExceptionHandler"/>
+
+  <substitution:dataflow id="myDataflowJob" class="com.fangjia.substitution.MyDataflowJob"
+    registry-center-ref="regCenter"
+    sharding-total-count="1" cron="0 38 19 * * ?" sharding-item-parameters=""
+    description="我的第一个数据流作业"
+    streaming-process="false" overwrite="true"/>
+
+  <substitution:script id="myScriptJob" registry-center-ref="regCenter"
+    script-command-line="/Users/yinjihuan/Documents/workspace_spring_cloud/spring-cloud/fangjia-substitution/demo.sh"
+    sharding-total-count="1" cron="0/10 * * * * ?" sharding-item-parameters=""
+    description="我的第一个脚本任务" overwrite="true"
+    event-trace-rdb-data-source="elasticJobLog">
+    <substitution:listener class="com.fangjia.substitution.MessageElasticJobListener"></substitution:listener>
+  </substitution:script>-->
+</beans>

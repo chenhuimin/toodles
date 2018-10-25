@@ -1,8 +1,8 @@
 server:
   port: 8082
-spring:
-  application:
-    name: substitution
+logging:
+  level:
+    com.chm.toodles.api.client.provider: DEBUG # 配置client日志级别
 # eureka
 eureka:
   instance:
@@ -11,3 +11,41 @@ eureka:
   client:
     service-url:
       defaultZone: http://admin:admin@master:8761/eureka/,http://admin:admin@slave1:8762/eureka/
+spring:
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+#开启ribbion饥饿加载，即启动过程中初始化客户端
+ribbon:
+  eager-load:
+    enabled: true
+    clients: sc-provider
+  # ribbion重试机制配置
+  ConnectTimeout: 250
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
+  ReadTimeout: 2000
+
+#feign使用okhttp
+feign:
+  okhttp:
+    enabled: true
+  compression:
+    request:
+      mime-types: text/plain,text/xml,application/xml,application/json
+      min-request-size: 20
+      enabled: true
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+
+
+
+
+
+

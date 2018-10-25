@@ -1,0 +1,17 @@
+server:
+  port: 9011
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/hystrix
+  client:
+    service-url:
+      defaultZone: http://admin:admin@master:8761/eureka/,http://admin:admin@slave1:8762/eureka/
+#turbine
+turbine:
+  app-config: sc-substitution
+  aggregator:
+    cluster-config: default
+  cluster-name-expression: new String("default")

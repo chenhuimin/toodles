@@ -1,16 +1,11 @@
 package com.chm.toodles.substitution.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/house")
-public class HouseController {
+@RequestMapping("/substitution")
+public class SubstitutionController {
 
-  @GetMapping("/hello")
-  public String hello() {
-    return "Hello";
-  }
 
 }
