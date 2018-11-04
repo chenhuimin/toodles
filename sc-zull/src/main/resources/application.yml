@@ -1,0 +1,15 @@
+server:
+  port: 2103
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client:
+    service-url:
+      defaultZone: http://admin:admin@master:8761/eureka/,http://admin:admin@slave1:8762/eureka/
+zuul:
+#  prefix: /rest
+#zull

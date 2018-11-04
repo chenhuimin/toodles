@@ -115,6 +115,8 @@
     <module>sc-job</module>
     <module>sc-api-client</module>
     <module>sc-hystrix-dashboard</module>
+    <module>sc-zull</module>
+    <module>sc-common</module>
 
   </modules>
   <dependencyManagement>
