@@ -117,6 +117,7 @@
     <module>sc-hystrix-dashboard</module>
     <module>sc-zull</module>
     <module>sc-common</module>
+    <module>spring-cloud-code</module>
 
   </modules>
   <dependencyManagement>
